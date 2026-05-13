@@ -1,0 +1,114 @@
+:root {
+    --pearl-white: #fdfdfd;
+    --pearl-cream: #f9f7f2;
+    --pearl-blue: #b0c4de;
+    --pearl-shadow: #d1d9e6;
+    --text-main: #3a3a3a;
+    --accent: #1a2a6c;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--pearl-cream);
+    color: var(--text-main);
+    line-height: 1.8;
+}
+
+header {
+    background: linear-gradient(135deg, #ffffff, var(--pearl-blue));
+    padding: 60px 20px;
+    text-align: center;
+    border-bottom: 1px solid var(--pearl-shadow);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+nav {
+    margin-bottom: 40px;
+}
+
+nav a {
+    margin: 0 12px;
+    text-decoration: none;
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    color: #4ca1af;
+}
+
+.main-title h1, .main-title h2 {
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    margin: 0;
+    background: linear-gradient(45deg, #2c3e50, #4ca1af);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -1px;
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+    max-width: 1300px;
+    margin: 50px auto;
+    padding: 0 25px;
+}
+
+article {
+    background: var(--pearl-white);
+    padding: 45px;
+    border-radius: 20px;
+    box-shadow: 10px 10px 25px var(--pearl-shadow), -10px -10px 25px #ffffff;
+    border: 1px solid rgba(255,255,255,0.9);
+}
+
+.header-pill h3, .header-pill h4 {
+    color: var(--accent);
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    border-bottom: 2px solid var(--pearl-blue);
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+footer {
+    text-align: center;
+    padding: 50px;
+    background: var(--pearl-white);
+    border-top: 1px solid var(--pearl-shadow);
+    color: #888;
+}
+
+@media (max-width: 768px) {
+    nav a { display: block; margin: 15px 0; }
+    header { padding: 30px 15px; }
+    .content-grid { grid-template-columns: 1fr; margin: 20px auto; }
+}
+/* Estilos para el Modo Oscuro activado por JavaScript */
+body.dark-theme {
+    --pearl-cream: #121622;
+    --pearl-white: #1c2135;
+    --pearl-shadow: #0a0d14;
+    --text-main: #e2e8f0;
+    --accent: #4ca1af;
+}
+
+body.dark-theme header {
+    background: linear-gradient(135deg, #1c2135, #121622);
+    border-bottom: 1px solid var(--pearl-shadow);
+}
+
+body.dark-theme .main-title h1, body.dark-theme .main-title h2 {
+    background: linear-gradient(45deg, #4ca1af, #ffffff);
+    -webkit-background-clip: text;
+}
+
+body.dark-theme input {
+    color: #ffffff !important;
+}
