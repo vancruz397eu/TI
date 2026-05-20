@@ -111,15 +111,19 @@ const text = titleText + ' ' + paragraphsText;
         actionArea.appendChild(likeBtn);
         article.appendChild(actionArea);
 
-        // === 5. EFECTO VISUAL DE SELECCIÓN SUAVE ===
-        article.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
+               // === 5. EFECTO VISUAL DE SELECCIÓN SUAVE (Efecto Burbuja Flotante) ===
+        article.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease, border-color 0.4s ease';
+        
         article.addEventListener('mouseenter', () => {
-            article.style.transform = 'translateY(-5px)';
-            article.style.boxShadow = '15px 15px 35px var(--pearl-shadow), -15px -15px 35px #ffffff';
+            article.style.transform = 'translateY(-10px) scale(1.02)'; // Flota suavemente hacia arriba
+            article.style.borderColor = 'rgba(255, 64, 129, 0.4)'; // Brillo rosa tenue al borde
+            article.style.boxShadow = '0 15px 45px rgba(255, 64, 129, 0.15)'; 
         });
+        
         article.addEventListener('mouseleave', () => {
-            article.style.transform = 'translateY(0)';
-            article.style.boxShadow = '10px 10px 25px var(--pearl-shadow), -10px -10px 25px #ffffff';
+            article.style.transform = 'translateY(0) scale(1)';
+            article.style.borderColor = 'var(--border-glass)';
+            article.style.boxShadow = '0 8px 32px 0 var(--pearl-shadow)';
         });
     });
 });
