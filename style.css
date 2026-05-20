@@ -1,14 +1,14 @@
 @import url('https://googleapis.com');
 
 :root {
-    /* MODO DÍA: Silksong (Paleta cálida, coral y dorada) */
-    --bg-gradient: radial-gradient(circle at 50% 30%, #4a2118 0%, #2c110c 50%, #150503 100%);
-    --knight-stone: rgba(54, 28, 23, 0.85);
-    --soul-glow: #e03c31; 
-    --pale-ore: #ffd700; 
-    --text-main: #f3e5e2;
-    --accent: #ff6550;
-    --border-stone: rgba(248, 248, 240, 0.2);
+    /* MODO DÍA: Silksong - Sendas Verdes / Greenpath (Paleta Verde Claro Vivo, Musgo y Seda Dorada) */
+    --bg-gradient: radial-gradient(circle at 50% 30%, #1b382b 0%, #0f231a 50%, #07110c 100%); /* Caverna musgosa profunda */
+    --knight-stone: rgba(24, 43, 34, 0.85); /* Tablillas de piedra cubiertas de vegetación */
+    --soul-glow: #39ff14; /* Verde neón/claro ultra vivo de las plantas luminiscentes */
+    --pale-ore: #a9dfbf; /* Verde pálido brillante para hilos de seda naturales */
+    --text-main: #e8f5e9; /* Texto claro de alta legibilidad sobre el follaje */
+    --accent: #2ecc71; /* Verde esmeralda vivo para interacciones */
+    --border-stone: rgba(169, 223, 191, 0.2);
     
     /* Ilustración oficial de Hornet (Silksong) */
     --character-img: url('https://ibb.co'); 
@@ -35,17 +35,18 @@ body::before {
     position: fixed;
     bottom: 10px;
     right: 1%;
-    width: 180px; /* Tamaño más pequeño y controlado */
+    width: 180px;
     height: 320px;
     background-image: var(--character-img);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: bottom right;
-    z-index: 1; /* Detrás de cualquier interacción pero visible */
+    z-index: 1;
     pointer-events: none;
     transition: background-image 0.5s ease, filter 0.5s ease;
     animation: floatingCharacter 4s ease-in-out infinite;
-    filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 10px rgba(224, 60, 49, 0.3));
+    /* Resplandor verde claro y vivo rodeando la silueta de Hornet */
+    filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 12px rgba(57, 255, 20, 0.45));
 }
 
 @keyframes floatingCharacter {
@@ -55,18 +56,19 @@ body::before {
 }
 
 header {
-    background: linear-gradient(to bottom, rgba(21, 5, 3, 0.8), transparent);
+    background: linear-gradient(to bottom, rgba(7, 17, 12, 0.8), transparent);
     padding: 60px 20px 30px;
     text-align: center;
     position: relative;
 }
 
+/* Efecto de esporas ácidas y neblina de Greenpath en el fondo */
 header::after {
     content: '';
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: radial-gradient(transparent 50%, #150503 100%), 
-                url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://w3.org"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.04"/></svg>');
+    background: radial-gradient(transparent 50%, #07110c 100%), 
+                url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://w3.org"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.05"/></svg>');
     pointer-events: none;
 }
 
@@ -106,15 +108,16 @@ nav a:hover {
     font-size: clamp(2.2rem, 6vw, 3.8rem);
     margin: 0;
     display: inline-block;
-    background: linear-gradient(45deg, #ffffff, #fff6df, #ffd700);
+    /* Degradado de musgo luminoso: Blanco puro a Verde Claro Vivo */
+    background: linear-gradient(45deg, #ffffff, #c8f7c5, #39ff14);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     letter-spacing: 4px;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9); /* Sombra negra sólida de fondo para contraste total */
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
 }
 
 header p {
-    color: #bfa39e;
+    color: #94bda6;
     font-family: 'Cinzel', serif;
     font-size: 0.9rem;
     letter-spacing: 1px;
@@ -126,7 +129,7 @@ header p {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 30px;
-    max-width: 65%; /* Reducido al 65% para que los personajes nunca toquen las tarjetas */
+    max-width: 65%;
     margin: 30px auto;
     padding: 0 20px;
     position: relative;
@@ -158,7 +161,7 @@ article::before {
     font-weight: 600;
     font-size: 0.95rem;
     letter-spacing: 3px;
-    border-bottom: 1px solid rgba(224, 60, 49, 0.3);
+    border-bottom: 1px solid rgba(57, 255, 20, 0.3);
     padding-bottom: 8px;
     display: block;
     margin-bottom: 20px;
@@ -167,9 +170,9 @@ article::before {
 footer {
     text-align: center;
     padding: 40px;
-    background: #0b0202;
-    border-top: 1px solid rgba(224, 60, 49, 0.1);
-    color: #6e5551;
+    background: #040a07;
+    border-top: 1px solid rgba(57, 255, 20, 0.1);
+    color: #4b6355;
     font-family: 'Cinzel', serif;
     font-size: 0.8rem;
     letter-spacing: 2px;
@@ -204,7 +207,7 @@ body.dark-theme {
     --text-main: #b0c0c0;
     --accent: #93e1ed;
     --border-stone: rgba(123, 143, 153, 0.25);
-    --character-img: url('https://ibb.co'); /* Carga al Caballero Oscuro */
+    --character-img: url('https://ibb.co'); /* Caballero Clásico */
 }
 
 body.dark-theme::before {
@@ -227,8 +230,8 @@ body.dark-theme footer {
 }
 
 #dark-mode-toggle {
-    background: #2c110c !important;
-    border: 1px solid rgba(255, 215, 0, 0.3) !important;
+    background: #0f231a !important; /* Estilo de botón musgoso */
+    border: 1px solid rgba(57, 255, 20, 0.3) !important;
     box-shadow: 0 10px 30px rgba(0,0,0,0.6) !important;
 }
 body.dark-theme #dark-mode-toggle {
