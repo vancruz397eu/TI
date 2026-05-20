@@ -5,6 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TegnoLogia | Inicio</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="estilo.css">
+    
+    <!-- ESTILOS BLINDADOS INTERNOS (Para solucionar la caja blanca y activar personajes) -->
+    <style>
+        .main-title {
+            background: transparent !important;
+            background-color: transparent !important;
+            text-align: center;
+            margin: 15px auto;
+            display: block;
+        }
+        .main-title h1, .main-title h2 {
+            font-family: 'Cinzel', serif !important;
+            color: #ffffff !important;
+            background: none !important;
+            -webkit-background-clip: initial !important;
+            background-clip: initial !important;
+            -webkit-text-fill-color: initial !important;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.6), 0 0 30px var(--soul-glow, #39ff14) !important;
+            letter-spacing: 4px;
+            display: inline-block;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            bottom: 0;
+            right: 2%;
+            width: 200px;
+            height: 380px;
+            background-image: var(--character-img, url('https://ibb.co')) !important;
+            background-size: contain !important;
+            background-repeat: no-repeat !important;
+            background-position: bottom right !important;
+            z-index: 999 !important;
+            pointer-events: none;
+            animation: floatingCharacter 4s ease-in-out infinite;
+        }
+        @keyframes floatingCharacter {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
 </head>
 <body>
     <header>
