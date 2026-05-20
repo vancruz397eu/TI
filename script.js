@@ -111,19 +111,24 @@ const text = titleText + ' ' + paragraphsText;
         actionArea.appendChild(likeBtn);
         article.appendChild(actionArea);
 
-               // === 5. EFECTO VISUAL DE SELECCIÓN SUAVE (Efecto Burbuja Flotante) ===
-        article.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease, border-color 0.4s ease';
+                  // === 5. EFECTO VISUAL DE SELECCIÓN SUAVE (Dinamismo Pharloom / Hallownest) ===
+        article.style.transition = 'transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease';
         
         article.addEventListener('mouseenter', () => {
-            article.style.transform = 'translateY(-10px) scale(1.02)'; // Flota suavemente hacia arriba
-            article.style.borderColor = 'rgba(255, 64, 129, 0.4)'; // Brillo rosa tenue al borde
-            article.style.boxShadow = '0 15px 45px rgba(255, 64, 129, 0.15)'; 
+            article.style.transform = 'translateY(-5px)';
+            article.style.borderColor = 'var(--soul-glow)';
+            
+            if (document.body.classList.contains('dark-theme')) {
+                article.style.boxShadow = '0 0 25px rgba(123, 240, 255, 0.2), 0 20px 50px rgba(0, 0, 0, 0.6)';
+            } else {
+                article.style.boxShadow = '0 0 25px rgba(224, 60, 49, 0.25), 0 20px 50px rgba(0, 0, 0, 0.7)';
+            }
         });
         
         article.addEventListener('mouseleave', () => {
-            article.style.transform = 'translateY(0) scale(1)';
-            article.style.borderColor = 'var(--border-glass)';
-            article.style.boxShadow = '0 8px 32px 0 var(--pearl-shadow)';
+            article.style.transform = 'translateY(0)';
+            article.style.borderColor = 'var(--border-stone)';
+            article.style.boxShadow = '0 20px 50px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.03)';
         });
     });
 });
