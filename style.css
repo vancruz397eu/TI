@@ -4,16 +4,14 @@
     /* MODO DÍA: Silksong (Paleta cálida, coral y dorada) */
     --bg-gradient: radial-gradient(circle at 50% 30%, #4a2118 0%, #2c110c 50%, #150503 100%);
     --knight-stone: rgba(54, 28, 23, 0.85);
-    --soul-glow: #e03c31; /* Rojo Hornet */
-    --pale-ore: #ffd700; /* Seda Dorada */
+    --soul-glow: #e03c31; 
+    --pale-ore: #ffd700; 
     --text-main: #f3e5e2;
     --accent: #ff6550;
     --border-stone: rgba(248, 248, 240, 0.2);
     
-    /* Imagen oficial en HD de Hornet lista para combate en Silksong */
+    /* Ilustración oficial de Hornet (Silksong) */
     --character-img: url('https://ibb.co'); 
-    --character-opacity-day: 1;
-    --character-opacity-night: 0;
 }
 
 body {
@@ -25,40 +23,40 @@ body {
     color: var(--text-main);
     line-height: 1.8;
     transition: background 0.5s ease;
-    overflow-x: hidden; /* Evita scrolls raros causados por los personajes */
+    overflow-x: hidden;
+    position: relative;
 }
 
 /* ==========================================================================
-   DISEÑO DINÁMICO DE PERSONAJES (Fijo en el lateral derecho)
+   PERSONAJES ULTRA VISIBLES Y AJUSTADOS (Nunca tapan el texto)
    ========================================================================== */
 body::before {
     content: '';
     position: fixed;
-    bottom: -20px;
-    right: 2%;
-    width: 350px;
-    height: 550px;
+    bottom: 10px;
+    right: 1%;
+    width: 180px; /* Tamaño más pequeño y controlado */
+    height: 320px;
     background-image: var(--character-img);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: bottom right;
-    z-index: 5;
-    pointer-events: none; /* Permite hacer clic a través del personaje sin estorbar */
-    transition: background-image 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease, filter 0.5s ease;
-    animation: floatingCharacter 4s ease-in-out infinite; /* Movimiento fluido */
-    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 15px rgba(224, 60, 49, 0.25));
+    z-index: 1; /* Detrás de cualquier interacción pero visible */
+    pointer-events: none;
+    transition: background-image 0.5s ease, filter 0.5s ease;
+    animation: floatingCharacter 4s ease-in-out infinite;
+    filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 10px rgba(224, 60, 49, 0.3));
 }
 
-/* Animación de flotación mística estilo menú del juego */
 @keyframes floatingCharacter {
-    0% { transform: translateY(0px) rotate(0deg); }
-    50% { transform: translateY(-15px) rotate(1deg); }
-    100% { transform: translateY(0px) rotate(0deg); }
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+    100% { transform: translateY(0px); }
 }
 
 header {
     background: linear-gradient(to bottom, rgba(21, 5, 3, 0.8), transparent);
-    padding: 80px 20px 40px;
+    padding: 60px 20px 30px;
     text-align: center;
     position: relative;
 }
@@ -73,13 +71,13 @@ header::after {
 }
 
 nav {
-    margin-bottom: 50px;
+    margin-bottom: 40px;
     position: relative;
     z-index: 10;
 }
 
 nav a {
-    margin: 0 15px;
+    margin: 0 12px;
     text-decoration: none;
     color: var(--pale-ore);
     font-family: 'Cinzel', serif;
@@ -94,16 +92,25 @@ nav a:hover {
     text-shadow: 0 0 12px var(--soul-glow);
 }
 
+/* CORRECCIÓN FINAL DE VISIBILIDAD DE TÍTULOS */
+.main-title {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin: 10px auto;
+}
+
 .main-title h1, .main-title h2 {
     font-family: 'Cinzel', serif;
     font-weight: 400;
-    font-size: clamp(2.8rem, 8vw, 4.5rem);
+    font-size: clamp(2.2rem, 6vw, 3.8rem);
     margin: 0;
-    background: linear-gradient(45deg, #ffffff, #fff2cc, #f8f8f0);
+    display: inline-block;
+    background: linear-gradient(45deg, #ffffff, #fff6df, #ffd700);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     letter-spacing: 4px;
-    text-shadow: 0 0 20px rgba(255, 255, 255, 0.2), 0 0 40px rgba(224, 60, 49, 0.35);
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9); /* Sombra negra sólida de fondo para contraste total */
 }
 
 header p {
@@ -114,31 +121,24 @@ header p {
     margin-top: 15px;
 }
 
+/* PROTECCIÓN DE TEXTO: El contenedor ocupa el centro y deja las esquinas limpias */
 .content-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 35px;
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 0 25px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    max-width: 65%; /* Reducido al 65% para que los personajes nunca toquen las tarjetas */
+    margin: 30px auto;
+    padding: 0 20px;
     position: relative;
-    z-index: 10; /* Coloca el texto por encima del área del personaje */
-}
-
-/* Espaciado responsivo en PC para que el texto no tape al personaje */
-@media (min-width: 1200px) {
-    .content-grid {
-        max-width: 73%;
-        margin-left: 5%;
-    }
+    z-index: 10;
 }
 
 article {
     background: var(--knight-stone);
     backdrop-filter: blur(4px);
-    padding: 40px;
+    padding: 35px;
     border-radius: 4px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.03);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
     border: 1px solid var(--border-stone);
     position: relative;
     transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
@@ -147,7 +147,7 @@ article {
 article::before {
     content: '';
     position: absolute;
-    top: 10px; left: 10px; right: 10px; bottom: 10px;
+    top: 8px; left: 8px; right: 8px; bottom: 8px;
     border: 1px solid rgba(255, 255, 255, 0.02);
     pointer-events: none;
 }
@@ -166,13 +166,15 @@ article::before {
 
 footer {
     text-align: center;
-    padding: 60px;
+    padding: 40px;
     background: #0b0202;
     border-top: 1px solid rgba(224, 60, 49, 0.1);
     color: #6e5551;
     font-family: 'Cinzel', serif;
     font-size: 0.8rem;
     letter-spacing: 2px;
+    position: relative;
+    z-index: 10;
 }
 
 input {
@@ -183,12 +185,12 @@ input {
     box-shadow: inset 0 4px 15px rgba(0,0,0,0.7) !important;
 }
 
-/* Ocultar personajes en celulares para garantizar comodidad de lectura */
-@media (max-width: 1024px) {
+/* RESPONSIVE: En pantallas medianas o celulares se ensancha el texto y se ocultan los personajes */
+@media (max-width: 1100px) {
     body::before { display: none !important; }
-    .content-grid { max-width: 1200px; margin: 40px auto; }
-    nav a { display: block; margin: 20px 0; }
-    header { padding: 40px 15px; }
+    .content-grid { max-width: 90%; margin: 30px auto; }
+    nav a { display: block; margin: 15px 0; }
+    header { padding: 30px 15px; }
 }
 
 /* ==========================================================================
@@ -197,24 +199,21 @@ input {
 body.dark-theme {
     --bg-gradient: radial-gradient(circle at 50% 30%, #161d26 0%, #0d1117 60%, #05070a 100%);
     --knight-stone: rgba(22, 28, 38, 0.8);
-    --soul-glow: #7bf0ff; /* Azul Tótems */
-    --pale-ore: #d1dbdb; /* Mineral de Aguijón */
+    --soul-glow: #7bf0ff; 
+    --pale-ore: #d1dbdb; 
     --text-main: #b0c0c0;
     --accent: #93e1ed;
     --border-stone: rgba(123, 143, 153, 0.25);
-    
-    /* Cambia la imagen automáticamente a El Caballero de Hollow Knight en HD */
-    --character-img: url('https://ibb.co');
+    --character-img: url('https://ibb.co'); /* Carga al Caballero Oscuro */
 }
 
 body.dark-theme::before {
-    /* Aplica un brillo fantasmal azul celeste al Caballero */
-    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 20px rgba(123, 240, 255, 0.3)) !important;
+    filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 15px rgba(123, 240, 255, 0.35)) !important;
 }
 
 body.dark-theme .main-title h1, body.dark-theme .main-title h2 {
     background: linear-gradient(45deg, #ffffff, #a3f7ff, #e6fcfd);
-    text-shadow: 0 0 20px rgba(255, 255, 255, 0.15), 0 0 40px rgba(123, 240, 255, 0.3);
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
 }
 
 body.dark-theme header {
