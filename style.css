@@ -2,15 +2,15 @@
 
 :root {
     /* MODO DÍA: Silksong - Sendas Verdes / Greenpath (Paleta Verde Claro Vivo, Musgo y Seda Dorada) */
-    --bg-gradient: radial-gradient(circle at 50% 30%, #1b382b 0%, #0f231a 50%, #07110c 100%); /* Caverna musgosa profunda */
-    --knight-stone: rgba(24, 43, 34, 0.85); /* Tablillas de piedra cubiertas de vegetación */
-    --soul-glow: #39ff14; /* Verde neón/claro ultra vivo de las plantas luminiscentes */
-    --pale-ore: #a9dfbf; /* Verde pálido brillante para hilos de seda naturales */
-    --text-main: #e8f5e9; /* Texto claro de alta legibilidad sobre el follaje */
-    --accent: #2ecc71; /* Verde esmeralda vivo para interacciones */
+    --bg-gradient: radial-gradient(circle at 50% 30%, #1b382b 0%, #0f231a 50%, #07110c 100%); 
+    --knight-stone: rgba(24, 43, 34, 0.85); 
+    --soul-glow: #39ff14; 
+    --pale-ore: #a9dfbf; 
+    --text-main: #e8f5e9; 
+    --accent: #2ecc71; 
     --border-stone: rgba(169, 223, 191, 0.2);
     
-    /* Ilustración oficial de Hornet (Silksong) */
+    /* Ilustración oficial en HD de Hornet */
     --character-img: url('https://ibb.co'); 
 }
 
@@ -24,34 +24,32 @@ body {
     line-height: 1.8;
     transition: background 0.5s ease;
     overflow-x: hidden;
-    position: relative;
 }
 
 /* ==========================================================================
-   PERSONAJES ULTRA VISIBLES Y AJUSTADOS (Nunca tapan el texto)
+   CORRECCIÓN ESTRUCTURAL DE PERSONAJES FLOTANTES
    ========================================================================== */
 body::before {
     content: '';
     position: fixed;
-    bottom: 10px;
-    right: 1%;
-    width: 180px;
-    height: 320px;
+    bottom: 0;
+    right: 20px;
+    width: 220px; /* Incrementado para mejor visibilidad */
+    height: 400px;
     background-image: var(--character-img);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: bottom right;
-    z-index: 1;
+    z-index: 99; /* Forzado por encima del fondo para visibilidad absoluta */
     pointer-events: none;
-    transition: background-image 0.5s ease, filter 0.5s ease;
     animation: floatingCharacter 4s ease-in-out infinite;
-    /* Resplandor verde claro y vivo rodeando la silueta de Hornet */
-    filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 12px rgba(57, 255, 20, 0.45));
+    filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 15px var(--soul-glow));
+    transition: background-image 0.5s ease, filter 0.5s ease;
 }
 
 @keyframes floatingCharacter {
     0% { transform: translateY(0px); }
-    50% { transform: translateY(-8px); }
+    50% { transform: translateY(-12px); }
     100% { transform: translateY(0px); }
 }
 
@@ -62,7 +60,6 @@ header {
     position: relative;
 }
 
-/* Efecto de esporas ácidas y neblina de Greenpath en el fondo */
 header::after {
     content: '';
     position: absolute;
@@ -75,7 +72,7 @@ header::after {
 nav {
     margin-bottom: 40px;
     position: relative;
-    z-index: 10;
+    z-index: 100;
 }
 
 nav a {
@@ -94,12 +91,15 @@ nav a:hover {
     text-shadow: 0 0 12px var(--soul-glow);
 }
 
-/* CORRECCIÓN FINAL DE VISIBILIDAD DE TÍTULOS */
+/* ==========================================================================
+   SOLUCIÓN DEFINITIVA AL RECUADRO Y VISIBILIDAD DEL TÍTULO
+   ========================================================================== */
 .main-title {
     display: block;
     width: 100%;
     text-align: center;
-    margin: 10px auto;
+    margin: 15px auto;
+    background: transparent !important; /* Elimina cualquier caja de fondo heredada */
 }
 
 .main-title h1, .main-title h2 {
@@ -108,12 +108,13 @@ nav a:hover {
     font-size: clamp(2.2rem, 6vw, 3.8rem);
     margin: 0;
     display: inline-block;
-    /* Degradado de musgo luminoso: Blanco puro a Verde Claro Vivo */
-    background: linear-gradient(45deg, #ffffff, #c8f7c5, #39ff14);
+    color: #ffffff; /* Color base sólido para evitar recuadros fallidos */
+    background: linear-gradient(45deg, #ffffff, #c8f7c5, var(--soul-glow));
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     letter-spacing: 4px;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.95)); /* Reemplazo de text-shadow para evitar fallos de renderizado */
 }
 
 header p {
@@ -124,12 +125,12 @@ header p {
     margin-top: 15px;
 }
 
-/* PROTECCIÓN DE TEXTO: El contenedor ocupa el centro y deja las esquinas limpias */
+/* PROTECCIÓN DE TEXTO */
 .content-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 30px;
-    max-width: 65%;
+    max-width: 70%; /* Ajustado para dar excelente margen lateral */
     margin: 30px auto;
     padding: 0 20px;
     position: relative;
@@ -188,10 +189,10 @@ input {
     box-shadow: inset 0 4px 15px rgba(0,0,0,0.7) !important;
 }
 
-/* RESPONSIVE: En pantallas medianas o celulares se ensancha el texto y se ocultan los personajes */
-@media (max-width: 1100px) {
+/* RESPONSIVE */
+@media (max-width: 1200px) {
     body::before { display: none !important; }
-    .content-grid { max-width: 90%; margin: 30px auto; }
+    .content-grid { max-width: 95%; margin: 30px auto; }
     nav a { display: block; margin: 15px 0; }
     header { padding: 30px 15px; }
 }
@@ -207,16 +208,19 @@ body.dark-theme {
     --text-main: #b0c0c0;
     --accent: #93e1ed;
     --border-stone: rgba(123, 143, 153, 0.25);
-    --character-img: url('https://ibb.co'); /* Caballero Clásico */
+    
+    /* Cambia la imagen de fondo de Hornet al Caballero */
+    --character-img: url('https://ibb.co'); 
 }
 
 body.dark-theme::before {
-    filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 15px rgba(123, 240, 255, 0.35)) !important;
+    filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 15px var(--soul-glow)) !important;
 }
 
-body.dark-theme .main-title h1, body.dark-theme .main-title h2 {
-    background: linear-gradient(45deg, #ffffff, #a3f7ff, #e6fcfd);
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+body.dark-theme .main-title h1, body.dark-theme .main-theme h2 {
+    background: linear-gradient(45deg, #ffffff, #a3f7ff, var(--soul-glow));
+    -webkit-background-clip: text;
+    background-clip: text;
 }
 
 body.dark-theme header {
@@ -230,7 +234,7 @@ body.dark-theme footer {
 }
 
 #dark-mode-toggle {
-    background: #0f231a !important; /* Estilo de botón musgoso */
+    background: #0f231a !important;
     border: 1px solid rgba(57, 255, 20, 0.3) !important;
     box-shadow: 0 10px 30px rgba(0,0,0,0.6) !important;
 }
