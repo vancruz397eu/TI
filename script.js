@@ -48,7 +48,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const articles = document.querySelectorAll('article');
 
             articles.forEach(article => {
-                const text = article.innerText.toLowerCase();
+                const titleText = article.querySelector('.header-pill')?.innerText.toLowerCase() || '';
+const paragraphsText = Array.from(article.querySelectorAll('p')).map(p => p.innerText.toLowerCase()).join(' ');
+const text = titleText + ' ' + paragraphsText;
+
                 if (text.includes(query)) {
                     article.style.display = 'block';
                     article.style.opacity = '1';
