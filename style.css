@@ -112,3 +112,11 @@ body.dark-theme .main-title h1, body.dark-theme .main-title h2 {
 body.dark-theme input {
     color: #ffffff !important;
 }
+#dark-mode-toggle {
+    background: var(--pearl-white) !important;
+    color: var(--accent) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
