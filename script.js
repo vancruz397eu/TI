@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const mainContent = document.querySelector('.content-grid');
     if (mainContent) {
         const searchContainer = document.createElement('div');
-        searchContainer.style.cssText = 'grid-column: 1 / -1; width: 100%; max-width: 500px; margin: 0 auto 20px;';
+        searchContainer.style.cssText = 'grid-column: 1 / -1; width: 100%; max-width: 500px; margin: 0 auto 20px; position: relative; z-index: 20;';
         
         const searchInput = document.createElement('input');
         searchInput.type = 'text';
@@ -49,8 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             articles.forEach(article => {
                 const titleText = article.querySelector('.header-pill')?.innerText.toLowerCase() || '';
-const paragraphsText = Array.from(article.querySelectorAll('p')).map(p => p.innerText.toLowerCase()).join(' ');
-const text = titleText + ' ' + paragraphsText;
+                const paragraphsText = Array.from(article.querySelectorAll('p')).map(p => p.innerText.toLowerCase()).join(' ');
+                const text = titleText + ' ' + paragraphsText;
 
                 if (text.includes(query)) {
                     article.style.display = 'block';
@@ -64,17 +64,14 @@ const text = titleText + ' ' + paragraphsText;
 
     // === 3. FUNCIÓN DE GUARDAR ARTÍCULOS COMO FAVORITOS ===
     document.querySelectorAll('article').forEach((article, index) => {
-        // Crear contenedor para botones interactivos del artículo
         const actionArea = document.createElement('div');
-        actionArea.style.cssText = 'margin-top: 20px; display: flex; gap: 15px;';
+        actionArea.style.cssText = 'margin-top: 20px; display: flex; gap: 15px; position: relative; z-index: 20;';
 
-        // Identificador único basado en la URL y el índice del bloque
         const articleId = `${window.location.pathname}-art-${index}`;
 
         const favBtn = document.createElement('button');
-        favBtn.style.cssText = 'background:transparent; border:none; cursor:pointer; font-size:1.2rem; transition:0.2s;';
+        favBtn.style.cssText = 'background:transparent; border:none; cursor:pointer; font-size:1.2rem; transition:0.2s; color: var(--pale-ore); font-family: "Cinzel", serif;';
         
-        // Revisar si ya era favorito localmente
         let favorites = JSON.parse(localStorage.getItem('fav-articles')) || [];
         favBtn.innerHTML = favorites.includes(articleId) ? '❤️ Quitar Favorito' : '🤍 Guardar Favorito';
 
@@ -92,7 +89,7 @@ const text = titleText + ' ' + paragraphsText;
 
         // === 4. CONTADOR DE REACCIONES ("ME GUSTA") ===
         const likeBtn = document.createElement('button');
-        likeBtn.style.cssText = 'background:transparent; border:none; cursor:pointer; font-size:1rem; color: var(--accent); font-weight:600;';
+        likeBtn.style.cssText = 'background:transparent; border:none; cursor:pointer; font-size:1rem; color: var(--accent); font-weight:600; font-family: "Cinzel", serif;';
         
         let likesCount = parseInt(localStorage.getItem(`likes-${articleId}`)) || 0;
         likeBtn.innerHTML = `👍 ${likesCount} Me gusta`;
@@ -102,7 +99,6 @@ const text = titleText + ' ' + paragraphsText;
             localStorage.setItem(`likes-${articleId}`, likesCount);
             likeBtn.innerHTML = `👍 ${likesCount} Me gusta`;
             
-            // Animación rápida de pulso
             likeBtn.style.transform = 'scale(1.2)';
             setTimeout(() => likeBtn.style.transform = 'scale(1)', 150);
         });
@@ -111,7 +107,7 @@ const text = titleText + ' ' + paragraphsText;
         actionArea.appendChild(likeBtn);
         article.appendChild(actionArea);
 
-                  // === 5. EFECTO VISUAL DE SELECCIÓN SUAVE (Dinamismo Pharloom / Hallownest) ===
+        // === 5. EFECTO VISUAL DE SELECCIÓN SUAVE (Dinamismo Pharloom / Hallownest) ===
         article.style.transition = 'transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease';
         
         article.addEventListener('mouseenter', () => {
