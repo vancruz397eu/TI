@@ -1,130 +1,58 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // === 1. INYECCIÓN AUTOMÁTICA DEL BOTÓN MODO OSCURO ===
-    const toggleBtn = document.createElement('button');
-    toggleBtn.id = 'dark-mode-toggle';
-    toggleBtn.innerHTML = '🌙';
-    toggleBtn.style.cssText = `
-        position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px;
-        border-radius: 50%; border: none; cursor: pointer; font-size: 1.5rem;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2); z-index: 1000; transition: 0.3s;
-        background: var(--pearl-white); color: var(--accent);
-    `;
-    document.body.appendChild(toggleBtn);
+// Credenciales de conexión a tu base de datos de Supabase
+const SUPABASE_URL = "https://lzhcjxvgiltnqgpllbzu.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_3iZ49a_T7eRe6R6aVusyYg_WcemwG6S";
 
-    // Comprobar estado guardado en el navegador
-    if (localStorage.getItem('theme') === 'dark') {
-        document.body.classList.add('dark-theme');
-        toggleBtn.innerHTML = '☀️';
+// Función automática para detectar la página actual y renderizar las tarjetas
+async function cargarTarjetasDinamicas() {
+    const contenedor = document.querySelector('.content-grid');
+    if (!contenedor) return; // Detiene el script si no encuentra el contenedor .content-grid
+
+    // Detectamos en qué archivo HTML está el usuario para filtrar en la base de datos
+    let paginaActual = window.location.pathname.split("/").pop();
+    
+    // Si la URL está limpia o es la raíz, asumimos que es index.html
+    if (paginaActual === "" || paginaActual === "index.html") {
+        paginaActual = "inicio";
+    } else {
+        paginaActual = paginaActual.replace(".html", ""); // Quita el '.html' (ej: 'ai.html' -> 'ai')
     }
 
-    toggleBtn.addEventListener('click', () => {
-        document.body.classList.toggle('dark-theme');
-        const isDark = document.body.classList.contains('dark-theme');
-        toggleBtn.innerHTML = isDark ? '☀️' : '🌙';
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    });
+    try {
+        // Hacemos la consulta filtrando por la sección correspondiente
+        const urlConsulta = `${SUPABASE_URL}/rest/v1/tarjetas?seccion=eq.${paginaActual}&select=*`;
+        const respuesta = await fetch(urlConsulta, {
+            headers: {
+                "apikey": SUPABASE_ANON_KEY,
+                "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
+            }
+        });
 
-    // === 2. INYECCIÓN AUTOMÁTICA DE BARRA DE BÚSQUEDA EN TIEMPO REAL ===
-    const mainContent = document.querySelector('.content-grid');
-    if (mainContent) {
-        const searchContainer = document.createElement('div');
-        searchContainer.style.cssText = 'grid-column: 1 / -1; width: 100%; max-width: 500px; margin: 0 auto 20px; position: relative; z-index: 20;';
-        
-        const searchInput = document.createElement('input');
-        searchInput.type = 'text';
-        searchInput.placeholder = '🔍 Buscar conceptos (ej: IA, cuántica, gadgets)...';
-        searchInput.style.cssText = `
-            width: 100%; padding: 12px 20px; border-radius: 30px; 
-            border: 1px solid var(--pearl-shadow); background: var(--pearl-white);
-            box-sizing: border-box; font-size: 1rem; color: var(--text-main);
-            outline: none; box-shadow: inset 2px 2px 5px var(--pearl-shadow);
-        `;
-        
-        searchContainer.appendChild(searchInput);
-        mainContent.parentNode.insertBefore(searchContainer, mainContent);
+        if (!respuesta.ok) throw new Error("Error al conectar con Supabase");
+        const datos = await respuesta.json();
 
-        searchInput.addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase().trim();
-            const articles = document.querySelectorAll('article');
-
-            articles.forEach(article => {
-                const titleText = article.querySelector('.header-pill')?.innerText.toLowerCase() || '';
-                const paragraphsText = Array.from(article.querySelectorAll('p')).map(p => p.innerText.toLowerCase()).join(' ');
-                const text = titleText + ' ' + paragraphsText;
-
-                if (text.includes(query)) {
-                    article.style.display = 'block';
-                    article.style.opacity = '1';
-                } else {
-                    article.style.display = 'none';
-                }
+        // Si hay información en la base de datos, limpiamos el HTML fijo y ponemos los datos dinámicos
+        if (datos.length > 0) {
+            contenedor.innerHTML = ""; 
+            
+            datos.forEach(tarjeta => {
+                // Comprobamos si tiene un segundo párrafo para no mostrar un espacio en blanco roto
+                const parrafoDosHTML = tarjeta.parrafo_dos ? `<p>${tarjeta.parrafo_dos}</p>` : '';
+                
+                const estructuraTarjeta = `
+                    <article>
+                        <div class="header-pill"><h4>${tarjeta.titulo}</h4></div>
+                        <p>${tarjeta.parrafo_uno}</p>
+                        ${parrafoDosHTML}
+                    </article>
+                `;
+                contenedor.innerHTML += estructuraTarjeta;
             });
-        });
+        }
+
+    } catch (error) {
+        console.error("Hubo un error cargando las tarjetas:", error);
     }
+}
 
-    // === 3. FUNCIÓN DE GUARDAR ARTÍCULOS COMO FAVORITOS ===
-    document.querySelectorAll('article').forEach((article, index) => {
-        const actionArea = document.createElement('div');
-        actionArea.style.cssText = 'margin-top: 20px; display: flex; gap: 15px; position: relative; z-index: 20;';
-
-        const articleId = `${window.location.pathname}-art-${index}`;
-
-        const favBtn = document.createElement('button');
-        favBtn.style.cssText = 'background:transparent; border:none; cursor:pointer; font-size:1.2rem; transition:0.2s; color: var(--pale-ore); font-family: "Cinzel", serif;';
-        
-        let favorites = JSON.parse(localStorage.getItem('fav-articles')) || [];
-        favBtn.innerHTML = favorites.includes(articleId) ? '❤️ Quitar Favorito' : '🤍 Guardar Favorito';
-
-        favBtn.addEventListener('click', () => {
-            favorites = JSON.parse(localStorage.getItem('fav-articles')) || [];
-            if (favorites.includes(articleId)) {
-                favorites = favorites.filter(id => id !== articleId);
-                favBtn.innerHTML = '🤍 Guardar Favorito';
-            } else {
-                favorites.push(articleId);
-                favBtn.innerHTML = '❤️ Quitar Favorito';
-            }
-            localStorage.setItem('fav-articles', JSON.stringify(favorites));
-        });
-
-        // === 4. CONTADOR DE REACCIONES ("ME GUSTA") ===
-        const likeBtn = document.createElement('button');
-        likeBtn.style.cssText = 'background:transparent; border:none; cursor:pointer; font-size:1rem; color: var(--accent); font-weight:600; font-family: "Cinzel", serif;';
-        
-        let likesCount = parseInt(localStorage.getItem(`likes-${articleId}`)) || 0;
-        likeBtn.innerHTML = `👍 ${likesCount} Me gusta`;
-
-        likeBtn.addEventListener('click', () => {
-            likesCount++;
-            localStorage.setItem(`likes-${articleId}`, likesCount);
-            likeBtn.innerHTML = `👍 ${likesCount} Me gusta`;
-            
-            likeBtn.style.transform = 'scale(1.2)';
-            setTimeout(() => likeBtn.style.transform = 'scale(1)', 150);
-        });
-
-        actionArea.appendChild(favBtn);
-        actionArea.appendChild(likeBtn);
-        article.appendChild(actionArea);
-
-        // === 5. EFECTO VISUAL DE SELECCIÓN SUAVE (Dinamismo Pharloom / Hallownest) ===
-        article.style.transition = 'transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease';
-        
-        article.addEventListener('mouseenter', () => {
-            article.style.transform = 'translateY(-5px)';
-            article.style.borderColor = 'var(--soul-glow)';
-            
-            if (document.body.classList.contains('dark-theme')) {
-                article.style.boxShadow = '0 0 25px rgba(123, 240, 255, 0.2), 0 20px 50px rgba(0, 0, 0, 0.6)';
-            } else {
-                article.style.boxShadow = '0 0 25px rgba(224, 60, 49, 0.25), 0 20px 50px rgba(0, 0, 0, 0.7)';
-            }
-        });
-        
-        article.addEventListener('mouseleave', () => {
-            article.style.transform = 'translateY(0)';
-            article.style.borderColor = 'var(--border-stone)';
-            article.style.boxShadow = '0 20px 50px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.03)';
-        });
-    });
-});
+// Escuchamos el evento cuando el HTML termina de cargar en el navegador
+document.addEventListener("DOMContentLoaded", cargarTarjetasDinamicas);
