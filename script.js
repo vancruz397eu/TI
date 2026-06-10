@@ -1,58 +1,44 @@
-// Credenciales de conexión a tu base de datos de Supabase
-const SUPABASE_URL = "https://lzhcjxvgiltnqgpllbzu.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_3iZ49a_T7eRe6R6aVusyYg_WcemwG6S";
+// ==========================================================================
+// CONTROL DEL MODO NOCHE (Toggle & LocalStorage)
+// ==========================================================================
+function inicializarModoNoche() {
+    const botonToggle = document.getElementById('dark-mode-toggle');
+    if (!botonToggle) return; // Si no encuentra el botón en la página actual, ignora la función
 
-// Función automática para detectar la página actual y renderizar las tarjetas
-async function cargarTarjetasDinamicas() {
-    const contenedor = document.querySelector('.content-grid');
-    if (!contenedor) return; // Detiene el script si no encuentra el contenedor .content-grid
-
-    // Detectamos en qué archivo HTML está el usuario para filtrar en la base de datos
-    let paginaActual = window.location.pathname.split("/").pop();
-    
-    // Si la URL está limpia o es la raíz, asumimos que es index.html
-    if (paginaActual === "" || paginaActual === "index.html") {
-        paginaActual = "inicio";
-    } else {
-        paginaActual = paginaActual.replace(".html", ""); // Quita el '.html' (ej: 'ai.html' -> 'ai')
+    // Al cargar la página, comprueba si el usuario ya tenía activo el Modo Noche previamente
+    if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-theme');
     }
 
-    try {
-        // Hacemos la consulta filtrando por la sección correspondiente
-        const urlConsulta = `${SUPABASE_URL}/rest/v1/tarjetas?seccion=eq.${paginaActual}&select=*`;
-        const respuesta = await fetch(urlConsulta, {
-            headers: {
-                "apikey": SUPABASE_ANON_KEY,
-                "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
-            }
-        });
-
-        if (!respuesta.ok) throw new Error("Error al conectar con Supabase");
-        const datos = await respuesta.json();
-
-        // Si hay información en la base de datos, limpiamos el HTML fijo y ponemos los datos dinámicos
-        if (datos.length > 0) {
-            contenedor.innerHTML = ""; 
-            
-            datos.forEach(tarjeta => {
-                // Comprobamos si tiene un segundo párrafo para no mostrar un espacio en blanco roto
-                const parrafoDosHTML = tarjeta.parrafo_dos ? `<p>${tarjeta.parrafo_dos}</p>` : '';
-                
-                const estructuraTarjeta = `
-                    <article>
-                        <div class="header-pill"><h4>${tarjeta.titulo}</h4></div>
-                        <p>${tarjeta.parrafo_uno}</p>
-                        ${parrafoDosHTML}
-                    </article>
-                `;
-                contenedor.innerHTML += estructuraTarjeta;
-            });
+    // Escucha el click del botón para alternar los estilos y guardarlo en memoria del navegador
+    botonToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-theme');
+        
+        if (document.body.classList.contains('dark-theme')) {
+            localStorage.setItem('theme', 'dark');
+        } else {
+            localStorage.setItem('theme', 'light');
         }
-
-    } catch (error) {
-        console.error("Hubo un error cargando las tarjetas:", error);
-    }
+    });
 }
 
-// Escuchamos el evento cuando el HTML termina de cargar en el navegador
-document.addEventListener("DOMContentLoaded", cargarTarjetasDinamicas);
+// ==========================================================================
+// EFECTO PARALLAX: Movimiento dinámico del fondo h1.png al hacer scroll
+// ==========================================================================
+window.addEventListener('scroll', () => {
+    // Calculamos el desplazamiento actual de la ventana
+    const despliegueTop = window.scrollY;
+    
+    // Multiplicamos por 0.4 para que el fondo se mueva más lento que el contenido (efecto de profundidad)
+    const posicionFondoY = despliegueTop * 0.4;
+    
+    // Desplaza el fondo del body de forma nativa y fluida
+    document.body.style.backgroundPositionY = `${posicionFondoY}px`;
+});
+
+// ==========================================================================
+// DISPARADOR GLOBAL: Inicializa los componentes cuando el HTML está listo
+// ==========================================================================
+document.addEventListener("DOMContentLoaded", () => {
+    inicializarModoNoche();
+});
