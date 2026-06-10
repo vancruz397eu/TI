@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -17,15 +17,15 @@
             display: block;
         }
         .main-title h1, .main-title h2 {
-            font-family: 'Cinzel', serif !important;
-            color: #ffffff !important;
-            background: none !important;
-            -webkit-background-clip: initial !important;
-            background-clip: initial !important;
-            -webkit-text-fill-color: initial !important;
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.6), 0 0 30px var(--soul-glow, #39ff14) !important;
-            letter-spacing: 4px;
-            display: inline-block;
+    font-family: 'Cinzel', serif !important;
+    color: #B2D4B4 !important;
+    background: none !important;
+    -webkit-background-clip: initial !important;
+    background-clip: initial !important;
+    -webkit-text-fill-color: initial !important;
+    text-shadow: 0 0 15px rgba(14,72,39,1.00),0 0 30px var( --soul-glow,#39ff14 ) !important;
+    letter-spacing: 4px;
+    display: inline-block;
         }
         body::before {
             content: '';
@@ -52,16 +52,33 @@
 <body>
     <header>
         <nav>
-            <a href="index.html">Inicio</a> | <a href="gadgets.html">Gadgets</a> | <a href="tendencias.html">Tendencias</a> | <a href="ai.html">AI</a> | <a href="evolucion.html">Evolución</a> | <a href="historias.html">Historia</a> | <a href="proyectos.html">Proyectos</a>
+            <a href="index.php">Inicio</a> | <a href="gadgets.html">Gadgets</a> | <a href="tendencias.html">Tendencias</a> | <a href="ai.html">AI</a> | <a href="evolucion.html">Evolución</a> | <a href="historias.html">Historia</a> | <a href="proyectos.html">Proyectos</a>
         </nav>
-        <div class="main-title"><h1>TegnoLogia</h1></div>
+        <div class="main-title">
+          <h1><em><strong>Tegno-Logia</strong></em></h1>
+        </div>
         <p style="max-width: 800px; margin: 20px auto;">Bienvenidos al portal líder en transformación digital, donde la ciencia y la innovación se encuentran para redefinir el futuro de la humanidad.</p>
     </header>
+<section class="contacto-neon">
+    <h2>Formulario de Contacto</h2>
+    <form action="enviar.form.php" method="POST">
+        <div class="grupo-campo">
+            <label>Nombre Completo:</label>
+            <input type="text" name="nombre" required placeholder="Tu nombre...">
+        </div>
+        <div class="grupo-campo">
+            <label>Correo Electrónico:</label>
+            <input type="email" name="correo" required placeholder="tu@correo.com">
+        </div>
+        <div class="grupo-campo">
+            <label>Mensaje:</label>
+            <textarea name="mensaje" required rows="4" placeholder="Escribe aquí tu mensaje..."></textarea>
+        </div>
+        <button type="submit">Enviar Mensaje</button>
+    </form>
+</section>
 
-    <!-- Contenedor optimizado y limpio para la Base de Datos -->
-    <main class="content-grid">
-        <!-- Las tarjetas se cargarán aquí desde Supabase automáticamente -->
-    </main>
+</section>
 
     <footer><p>&copy; 2026 TegnoLogia - Conalep 145</p></footer>
     <script src="script.js"></script>
